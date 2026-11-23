@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portfolio Starter</title>
+<title>Nikita | Websites for Local Businesses</title>
+<meta name="description" content="Nikita builds fast, phone-first websites for cafés, car detailers and local shops in Northampton.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -236,7 +237,7 @@ h1 em {
 .phone-shot { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 .mock .shot { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; border-radius: 0 0 2px 2px; }
 .face.front {
-  background: #efe9df;
+  background: #090a0d;
   color: #2b1d14;
   font-family: var(--body);
 }
@@ -254,31 +255,62 @@ h1 em {
   z-index: 5;
 }
 
-/* The ugly old site, on the back of the phone */
-.old {
-  color: #000;
-  font-family: "Times New Roman", Times, serif;
-  font-size: 12px;
-  line-height: 1.35;
-  padding: 26px 10px 10px;
-  display: grid;
-  gap: 8px;
+/* The "before": a typical bad modern site, a desktop template squashed onto a phone */
+.face.back { background: #fff; }
+.bad {
+  position: absolute; inset: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+  background: #f4f4f4;
+  overflow: hidden;
 }
-.old .marquee { background: #000080; color: #ffff00; font-weight: bold; text-align: center; padding: 4px; font-size: 13px; }
-.old a { color: #0000ee; }
-.old .uc {
-  color: #000; font-weight: bold; text-align: center; padding: 4px;
-  background: repeating-linear-gradient(45deg, #ffd800 0 10px, #111 10px 20px);
+.bad-top {
+  display: flex; align-items: center; gap: 6px;
+  padding: 26px 6px 5px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
 }
-.old .uc span { background: #ffd800; padding: 0 4px; }
-.old .broken {
-  border: 2px inset #c0c0c0; height: 70px; display: grid; place-items: center;
-  color: #777; font-size: 11px; background: #eee;
+.bad-logo { font-weight: 700; font-size: 8px; color: #2a6ebb; white-space: nowrap; }
+.bad-nav { font-size: 5.5px; color: #555; white-space: nowrap; overflow: hidden; }
+.bad-hero {
+  height: 92px;
+  background: linear-gradient(135deg, #9fb3c8, #c9d3dd 45%, #8e9eae);
+  padding: 14px 8px;
+  display: grid; align-content: center; gap: 3px;
 }
-.old table { border-collapse: collapse; width: 100%; }
-.old td { border: 1px solid #999; padding: 2px 4px; }
-.old .counter { font-family: "Courier New", monospace; background: #000; color: #0f0; padding: 1px 4px; }
-.old .tiny { font-size: 9px; color: #666; }
+.bad-hero b { font-weight: 300; font-size: 11px; color: #f2f4f6; letter-spacing: .02em; }
+.bad-hero span { font-size: 5.5px; color: #eef1f4; }
+.bad-hero i { font-style: normal; justify-self: start; margin-top: 3px; background: #f39c12; color: #fff; font-size: 5.5px; padding: 3px 6px; border-radius: 2px; }
+.bad-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 7px 6px; }
+.bad-cols div { background: #fff; padding: 4px; font-size: 4.5px; line-height: 1.35; color: #777; }
+.bad-cols b { display: block; font-size: 5.5px; color: #2a6ebb; margin-bottom: 2px; }
+.bad-gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding: 0 6px 6px; }
+.bad-gal i { height: 34px; background: linear-gradient(135deg, #b8c2cc, #d9dee3); }
+.bad-gal i:nth-child(2n) { background: linear-gradient(135deg, #a9b4bf, #cdd4db); }
+.bad-why { margin: 0 6px 5px; background: #fff; padding: 5px; font-size: 4.8px; line-height: 1.5; color: #777; }
+.bad-why b { display: block; font-size: 6px; color: #2a6ebb; margin-bottom: 2px; }
+.bad-map { display: grid; place-items: center; height: 30px; background: #e3e3e3; color: #aaa; font-size: 5px; }
+.bad-foot { font-size: 4.5px; color: #999; text-align: center; padding: 4px; }
+.bad-dim { position: absolute; inset: 0; background: rgba(0,0,0,.45); }
+.bad-pop {
+  position: absolute; left: 14px; right: 14px; top: 150px;
+  background: #fff; border-radius: 4px; padding: 12px 10px 10px;
+  text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,.35);
+}
+.bad-pop .x { position: absolute; right: 4px; top: 2px; font-size: 7px; color: #bbb; }
+.bad-pop b { display: block; font-size: 10px; color: #222; margin-bottom: 3px; }
+.bad-pop p { margin: 0 0 7px; font-size: 6.5px; color: #666; }
+.bad-pop .in { border: 1px solid #ccc; font-size: 6px; color: #aaa; text-align: left; padding: 5px; margin-bottom: 5px; }
+.bad-pop .sub { background: #f39c12; color: #fff; font-size: 7px; font-weight: 700; padding: 6px; }
+.bad-cookie {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: #2b2f33; color: #ddd;
+  padding: 9px 8px 18px;
+  font-size: 6px; line-height: 1.4;
+}
+.bad-cookie .row { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+.bad-cookie .acc { flex: 1; background: #2a6ebb; color: #fff; text-align: center; font-weight: 700; padding: 6px; font-size: 7px; }
+.bad-cookie .man { font-size: 5px; text-decoration: underline; color: #aaa; }
 .notch { width: 90px; height: 22px; background: #06080a; border-radius: 0 0 14px 14px; margin: 0 auto; }
 .cafe-nav { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; font-size: 11px; }
 .cafe-nav b { font-family: var(--display); font-size: 14px; letter-spacing: -0.01em; }
@@ -560,7 +592,6 @@ footer {
 }
 @media (max-width: 440px) {
   .phone { width: 230px; }
-  .old { font-size: 11px; }
   .nav { gap: 14px; font-size: 0.9rem; }
 }
 
@@ -611,25 +642,44 @@ footer {
         <div class="tilt" id="tilt">
           <div class="phone" id="phone" aria-hidden="true">
             <div class="face back">
-              <div class="old">
-                <div class="marquee">WELCOME TO OUR WEBSITE!!!</div>
-                <div><a href="#top" tabindex="-1">Click here</a> for our menu (PDF, 14MB)</div>
-                <div class="uc"><span>UNDER CONSTRUCTION</span></div>
-                <div class="broken">[image not found]</div>
-                <table>
-                  <tr><td>Mon-Fri</td><td>9-5?</td></tr>
-                  <tr><td>Sat</td><td>call us</td></tr>
-                  <tr><td>Sun</td><td>closed (maybe)</td></tr>
-                </table>
-                <div>You are visitor no. <span class="counter">000417</span></div>
-                <div>Last updated: March 2014</div>
-                <span class="tiny">Best viewed in Internet Explorer 6 at 800x600</span>
+              <div class="bad">
+                <div class="bad-top">
+                  <span class="bad-logo">MIKES VALETING</span>
+                  <span class="bad-nav">Home | About Us | Services | Gallery | Testimonials | Contact Us | Blog</span>
+                </div>
+                <div class="bad-hero">
+                  <b>Welcome To Mikes Valeting</b>
+                  <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                  <i>READ MORE</i>
+                </div>
+                <div class="bad-cols">
+                  <div><b>Our Services</b>We offer a wide range of services to suit all your needs. Please contact us for more information about our services.</div>
+                  <div><b>About Us</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</div>
+                  <div><b>Opening Times</b>Mon - Fri 9 - 5<br>Sat by appt<br>Sun closed<br>Bank hols: please call</div>
+                </div>
+                <div class="bad-gal"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="bad-why"><b>Why Choose Us?</b>&#10003; Fully insured &#10003; Competitive prices &#10003; Friendly service &#10003; 10+ years experience &#10003; Mobile service available</div>
+                <div class="bad-why"><b>Testimonials</b>&ldquo;Lorem ipsum dolor sit amet, great service would recommend&rdquo; &ndash; John D.</div>
+                <div class="bad-why"><b>Find Us</b><span class="bad-map">Map failed to load</span></div>
+                <div class="bad-foot">&copy; 2019 Mikes Valeting | Powered by SiteBuilder Pro</div>
+                <div class="bad-dim"></div>
+                <div class="bad-pop">
+                  <span class="x">&times;</span>
+                  <b>Don't miss out!</b>
+                  <p>Sign up to our newsletter for 5% off your first valet*</p>
+                  <div class="in">Enter your email address</div>
+                  <div class="sub">SUBSCRIBE</div>
+                </div>
+                <div class="bad-cookie">
+                  We use cookies to improve your experience on our website. By continuing to browse you agree to our use of cookies, privacy policy and terms and conditions.
+                  <div class="row"><span class="acc">ACCEPT ALL</span><span class="man">Manage preferences</span></div>
+                </div>
               </div>
               <div class="glare"></div>
             </div>
 
             <div class="face front">
-          <img class="phone-shot" src="images/cafe-mobile.jpg" alt="">
+          <img class="phone-shot" src="images/obsidian-mobile.jpg" alt="">
               <div class="glare"></div>
             </div>
           </div>
