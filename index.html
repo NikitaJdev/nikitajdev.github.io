@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Starter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: dark hero with a before/after phone demo (the pitch, shown not told), then light sections: offers, work as live mini mockups, process, contact. */
+:root {
+  --bg: #f4f4f2;
+  --surface: #ffffff;
+  --ink: #0a0a0a;
+  --muted: #5c5c5c;
+  --line: #dedede;
+  --accent: #ff2d2d;
+  --accent-text: #d11a1a;
+  --accent-ink: #ffffff;
+  --band: #0a0a0a;
+  --band-ink: #ffffff;
+  --band-muted: #a3a3a3;
+  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --ink: #f2f2f2;
+  --muted: #a3a3a3;
+  --line: #2a2a2a;
+  --accent: #ff3b3b;
+  --accent-text: #ff5c5c;
+  --accent-ink: #ffffff;
+  --band: #000000;
+  --band-ink: #f2f2f2;
+  --band-muted: #a3a3a3;
+  color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --ink: #f2f2f2;
+  --muted: #a3a3a3;
+  --line: #2a2a2a;
+  --accent: #ff3b3b;
+  --accent-text: #ff5c5c;
+  --accent-ink: #ffffff;
+  --band: #000000;
+  --band-ink: #f2f2f2;
+  --band-muted: #a3a3a3;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 5vw, 48px);
+}
+
+/* ---------- Hero band ---------- */
+.band {
+  background: var(--band);
+  color: var(--band-ink);
+  background-image:
+    radial-gradient(circle at 80% 30%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 45%),
+    linear-gradient(color-mix(in srgb, var(--band-ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--band-ink) 5%, transparent) 1px, transparent 1px);
+  background-size: auto, 40px 40px, 40px 40px;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0;
+}
+.logo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 0.95rem; }
+.nav a { text-decoration: none; color: var(--band-muted); }
+.nav a:hover { color: var(--band-ink); }
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 72px);
+  align-items: center;
+  padding: clamp(40px, 7vw, 88px) 0 clamp(56px, 8vw, 104px);
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--band-muted);
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--band-ink) 18%, transparent);
+  border-radius: 999px;
+}
+.status i {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #2fbf71;
+  box-shadow: 0 0 0 4px color-mix(in srgb, #2fbf71 25%, transparent);
+}
+.hero-copy { display: grid; gap: 24px; justify-items: start; }
+h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6.4vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.lede { max-width: 50ch; color: var(--band-muted); font-size: 1.15rem; margin: 0; }
+.lede strong { color: var(--band-ink); font-weight: 600; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font: 600 1rem var(--body);
+  text-decoration: none;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: transform .15s ease;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:hover { transform: translateY(-2px); }
+.btn .arrow { transition: transform .15s ease; }
+.btn:hover .arrow { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn .arrow { transition: none; }
+  .btn:hover, .btn:hover .arrow { transform: none; }
+}
+
+/* ---------- Before / after demo ---------- */
+.demo {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  perspective: 1200px;
+}
+.toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--band-ink) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--band-ink) 14%, transparent);
+}
+.toggle button {
+  font: 500 0.8rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 0;
+  background: transparent;
+  color: var(--band-muted);
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.hint { font-family: var(--mono); font-size: 0.75rem; color: var(--band-muted); margin: -8px 0 0; }
+
+/* 3D stage: the wrapper tilts with the mouse, the phone flips between faces */
+.tilt {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 6deg)) rotateY(var(--ry, -12deg));
+  transition: transform .25s ease-out;
+  position: relative;
+}
+.tilt::after {
+  content: "";
+  position: absolute;
+  left: 10%; right: 10%; bottom: -34px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent);
+  transform: translateZ(-60px);
+}
+.phone {
+  position: relative;
+  width: 260px;
+  aspect-ratio: 9 / 18.5;
+  transform-style: preserve-3d;
+  transition: transform .9s cubic-bezier(.2,.8,.2,1);
+  cursor: pointer;
+}
+.phone.flipped { transform: rotateY(180deg); }
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 40px;
+  border: 10px solid #06080a;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 0 0 1px #2a2f36, 0 30px 70px rgba(0,0,0,.5);
+}
+.phone-shot { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.mock .shot { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; border-radius: 0 0 2px 2px; }
+.face.front {
+  background: #efe9df;
+  color: #2b1d14;
+  font-family: var(--body);
+}
+.face.back {
+  transform: rotateY(180deg);
+  background: #fffff0;
+}
+.glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.22) 45%, transparent 60%);
+  background-size: 250% 100%;
+  background-position: var(--gx, 60%) 0;
+  z-index: 5;
+}
+
+/* The ugly old site, on the back of the phone */
+.old {
+  color: #000;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 26px 10px 10px;
+  display: grid;
+  gap: 8px;
+}
+.old .marquee { background: #000080; color: #ffff00; font-weight: bold; text-align: center; padding: 4px; font-size: 13px; }
+.old a { color: #0000ee; }
+.old .uc {
+  color: #000; font-weight: bold; text-align: center; padding: 4px;
+  background: repeating-linear-gradient(45deg, #ffd800 0 10px, #111 10px 20px);
+}
+.old .uc span { background: #ffd800; padding: 0 4px; }
+.old .broken {
+  border: 2px inset #c0c0c0; height: 70px; display: grid; place-items: center;
+  color: #777; font-size: 11px; background: #eee;
+}
+.old table { border-collapse: collapse; width: 100%; }
+.old td { border: 1px solid #999; padding: 2px 4px; }
+.old .counter { font-family: "Courier New", monospace; background: #000; color: #0f0; padding: 1px 4px; }
+.old .tiny { font-size: 9px; color: #666; }
+.notch { width: 90px; height: 22px; background: #06080a; border-radius: 0 0 14px 14px; margin: 0 auto; }
+.cafe-nav { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; font-size: 11px; }
+.cafe-nav b { font-family: var(--display); font-size: 14px; letter-spacing: -0.01em; }
+.burger { display: grid; gap: 3px; }
+.burger i { display: block; width: 16px; height: 2px; background: #2b1d14; border-radius: 2px; }
+.cafe-hero {
+  margin: 6px 12px 0;
+  height: 150px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #c98a4b, #7a4421 70%);
+}
+.cup {
+  position: absolute;
+  right: 22px;
+  bottom: 18px;
+  width: 62px;
+  height: 46px;
+  background: #fbf5ec;
+  border-radius: 4px 4px 28px 28px;
+}
+.cup::after {
+  content: "";
+  position: absolute;
+  right: -16px; top: 8px;
+  width: 16px; height: 20px;
+  border: 5px solid #fbf5ec;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+}
+.cup::before {
+  content: "";
+  position: absolute;
+  left: 6px; right: 6px; top: 4px; height: 8px;
+  background: #5a2f15;
+  border-radius: 50%;
+}
+.steam { position: absolute; right: 44px; bottom: 70px; display: flex; gap: 8px; }
+.steam i { width: 4px; height: 22px; border-radius: 4px; background: rgba(255,255,255,.55); }
+.steam i:nth-child(2) { height: 30px; transform: translateY(-6px); }
+.cafe-hero span {
+  position: absolute; left: 14px; top: 14px;
+  font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  background: #fbf5ec; color: #7a4421; padding: 3px 7px; border-radius: 99px;
+}
+.cafe-body { padding: 14px 16px; display: grid; gap: 10px; }
+.cafe-body h4 { margin: 0; font-family: var(--display); font-size: 20px; line-height: 1.05; letter-spacing: -0.02em; }
+.cafe-body p { margin: 0; font-size: 10.5px; color: #6b5444; line-height: 1.45; }
+.cafe-cta { display: flex; gap: 6px; }
+.cafe-cta span { font-size: 10px; font-weight: 600; padding: 7px 10px; border-radius: 8px; }
+.cafe-cta span:first-child { background: #2b1d14; color: #fbf5ec; }
+.cafe-cta span:last-child { border: 1.5px solid #2b1d14; }
+.hours { display: grid; gap: 3px; font-size: 10px; border-top: 1px solid #e8dccb; padding-top: 8px; font-variant-numeric: tabular-nums; }
+.hours div { display: flex; justify-content: space-between; }
+.hours .open { color: #1f8a4c; font-weight: 600; }
+
+/* ---------- Sections ---------- */
+section { padding: clamp(56px, 8vw, 96px) 0; }
+section + section { border-top: 1px solid var(--line); }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.label {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-text);
+  margin: 0 0 8px;
+}
+h2 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.section-head p { margin: 0; color: var(--muted); max-width: 40ch; }
+h3 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; margin: 0; line-height: 1.15; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 20px;
+}
+
+/* Offers */
+.offer {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  position: relative;
+  min-width: 0;
+}
+.offer.featured {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.offer.featured p, .offer.featured .price small { color: color-mix(in srgb, var(--bg) 70%, transparent); }
+.badge {
+  position: absolute;
+  top: -12px; right: 20px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.price {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2.6rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.price small { font: 400 0.9rem var(--body); color: var(--muted); letter-spacing: 0; }
+.offer p { margin: 0; color: var(--muted); }
+.offer ul { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.offer li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; align-items: start; }
+.offer li::before {
+  content: "";
+  width: 14px; height: 14px; margin-top: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  -webkit-mask: radial-gradient(circle, transparent 3px, #000 3.5px);
+          mask: radial-gradient(circle, transparent 3px, #000 3.5px);
+}
+
+/* Work */
+.project {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+}
+.mock {
+  aspect-ratio: 16 / 10;
+  padding: 18px 18px 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.browser {
+  display: flex; gap: 5px; align-items: center;
+  padding: 7px 10px;
+  border-radius: 8px 8px 0 0;
+  background: rgba(0,0,0,.18);
+}
+.browser i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.55); }
+.browser span { margin-left: 8px; height: 6px; flex: 1; max-width: 120px; border-radius: 4px; background: rgba(255,255,255,.35); }
+.screen { border-radius: 0; padding: 14px; display: grid; gap: 7px; align-content: start; overflow: hidden; }
+
+.mock.cafe { background: linear-gradient(150deg, #c9ad8f, #7a5c45); }
+.mock.cafe .screen { background: #fbf5ec; color: #2b1d14; }
+.mock.barber { background: linear-gradient(150deg, #2a2a2a, #0e0e0e); }
+.mock.barber .screen { background: #111; color: #e8c872; }
+.mock.self { background: linear-gradient(150deg, #3a3a3a, #0a0a0a); }
+.mock.self .screen { background: #0a0a0a; color: #ffffff; }
+
+.mini-title { font-family: var(--display); font-weight: 800; font-size: 17px; line-height: 1.05; letter-spacing: -0.02em; }
+.bar { height: 6px; border-radius: 4px; background: currentColor; opacity: .18; }
+.bar.w70 { width: 70%; } .bar.w50 { width: 50%; } .bar.w85 { width: 85%; }
+.mini-row { display: flex; gap: 6px; margin-top: 4px; }
+.mini-btn { font-size: 9px; font-weight: 600; padding: 5px 8px; border-radius: 6px; }
+.cafe .mini-btn { background: #2b1d14; color: #fbf5ec; }
+.barber .mini-btn { background: #e8c872; color: #111; }
+.self .mini-btn { background: #ff2d2d; color: #ffffff; }
+.chairs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
+.chairs div { padding: 10px 0; border: 1px solid #e8c87255; border-radius: 6px; display: grid; place-items: center; font-size: 9px; font-variant-numeric: tabular-nums; }
+.menu-grid { display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; font-size: 9.5px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.self .mini-title em { font-style: normal; color: #ff2d2d; }
+
+.project-body { padding: 22px 24px 26px; display: grid; gap: 10px; align-content: start; }
+.project-body p { margin: 0; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.view { margin-top: 10px; justify-self: start; font-weight: 600; color: var(--accent-text); text-decoration: none; border-bottom: 2px solid currentColor; padding-bottom: 2px; }
+.view:hover { color: var(--ink); }
+.tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.tag.concept { border-color: var(--accent-text); color: var(--accent-text); }
+
+/* Process */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 20px; counter-reset: step; }
+.step {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 26px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.step::before {
+  counter-increment: step;
+  content: "0" counter(step);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--accent-text);
+}
+.step p { margin: 0; color: var(--muted); }
+
+/* Contact */
+.contact {
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: 24px;
+  padding: clamp(32px, 6vw, 64px);
+  display: grid;
+  gap: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.contact::after {
+  content: "";
+  position: absolute;
+  right: -80px; bottom: -120px;
+  width: 340px; height: 340px;
+  border-radius: 50%;
+  border: 50px solid rgba(255,255,255,.14);
+}
+.contact h2 { color: #ffffff; max-width: 16ch; position: relative; z-index: 1; }
+.contact p { margin: 0; max-width: 50ch; position: relative; z-index: 1; }
+.email-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; position: relative; z-index: 1; }
+.email {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  padding: 13px 18px;
+  border-radius: 10px;
+  background: #0a0a0a;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+.contact .btn { color: #ffffff; border-color: #ffffff; }
+#copied { font-family: var(--mono); font-size: 0.85rem; min-height: 1.2em; }
+
+footer {
+  padding: 32px 0 48px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 440px) {
+  .phone { width: 230px; }
+  .old { font-size: 11px; }
+  .nav { gap: 14px; font-size: 0.9rem; }
+}
+
+/* Cards lift and tilt on hover (set by script on devices with a mouse) */
+.project {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0));
+  transition: transform .2s ease-out, box-shadow .2s ease-out;
+}
+.project:hover { --lift: -4px; box-shadow: 0 24px 50px rgba(0,0,0,.14); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt, .phone, .project { transition: none; }
+  .tilt { transform: none; }
+  .project, .project:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="band">
+  <div class="wrap">
+    <header class="top">
+      <a class="logo" href="#top">Nikita<span>.</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="hero" id="top">
+      <div class="hero-copy">
+        <span class="status"><i aria-hidden="true"></i> Taking on 3 new clients in Northampton</span>
+        <h1>Your website is losing you <em>customers.</em> I fix that.</h1>
+        <p class="lede">Most people find a local business on their phone. If your site is slow, broken or missing, they go next door. I'm <strong>Nikita</strong>, a software development student in Northampton, and I build fast, phone-first websites for cafés, car detailers and local shops.</p>
+        <div class="actions">
+          <a class="btn primary" href="#contact">Get a free quote <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="btn" href="#work">See my work</a>
+        </div>
+      </div>
+
+      <div class="demo">
+        <div class="toggle" role="group" aria-label="Compare an old café website with a new one">
+          <button type="button" id="btn-before" aria-pressed="false">Before</button>
+          <button type="button" id="btn-after" aria-pressed="true">After</button>
+        </div>
+
+        <div class="tilt" id="tilt">
+          <div class="phone" id="phone" aria-hidden="true">
+            <div class="face back">
+              <div class="old">
+                <div class="marquee">WELCOME TO OUR WEBSITE!!!</div>
+                <div><a href="#top" tabindex="-1">Click here</a> for our menu (PDF, 14MB)</div>
+                <div class="uc"><span>UNDER CONSTRUCTION</span></div>
+                <div class="broken">[image not found]</div>
+                <table>
+                  <tr><td>Mon-Fri</td><td>9-5?</td></tr>
+                  <tr><td>Sat</td><td>call us</td></tr>
+                  <tr><td>Sun</td><td>closed (maybe)</td></tr>
+                </table>
+                <div>You are visitor no. <span class="counter">000417</span></div>
+                <div>Last updated: March 2014</div>
+                <span class="tiny">Best viewed in Internet Explorer 6 at 800x600</span>
+              </div>
+              <div class="glare"></div>
+            </div>
+
+            <div class="face front">
+          <img class="phone-shot" src="images/cafe-mobile.jpg" alt="">
+              <div class="glare"></div>
+            </div>
+          </div>
+        </div>
+        <p class="hint">Tap the phone to flip it</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section id="services">
+    <div class="section-head">
+      <div>
+        <p class="label">Services</p>
+        <h2>Simple packages. No surprise bills.</h2>
+      </div>
+      <p>You pay once you're happy with it. No contracts, and you own your site.</p>
+    </div>
+    <div class="grid">
+      <article class="offer">
+        <h3>Website fix-up</h3>
+        <div class="price">£75 <small>one-off</small></div>
+        <p>Your site exists but looks dated or breaks on phones.</p>
+        <ul>
+          <li>Works properly on mobile</li>
+          <li>Correct hours, menu and contact details</li>
+          <li>Loads noticeably faster</li>
+        </ul>
+      </article>
+      <article class="offer featured">
+        <span class="badge">Most popular</span>
+        <h3>New one-page site</h3>
+        <div class="price">£200 <small>one-off</small></div>
+        <p>For businesses with no website, or one that's beyond saving.</p>
+        <ul>
+          <li>Custom design, built from scratch</li>
+          <li>Menu or price list, map and opening hours</li>
+          <li>Click-to-call and a contact form</li>
+          <li>Set up on your own domain</li>
+        </ul>
+      </article>
+      <article class="offer">
+        <h3>Care plan</h3>
+        <div class="price">£15 <small>per month</small></div>
+        <p>I keep your site up to date so you never have to touch it.</p>
+        <ul>
+          <li>Menu, price and hours changes</li>
+          <li>Seasonal offers and announcements</li>
+          <li>Quick fixes if anything breaks</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <div>
+        <p class="label">Work</p>
+        <h2>Things I've built</h2>
+      </div>
+      <p>Concept projects are designs I've made to show what a site for that kind of business could look like.</p>
+    </div>
+    <div class="grid">
+      <article class="project">
+        <div class="mock cafe" aria-hidden="true">
+          <div class="browser"><i></i><i></i><i></i><span></span></div>
+          <img class="shot" src="images/cafe-desktop.jpg" alt="">
+        </div>
+        <div class="project-body">
+          <h3>Corner Café</h3>
+          <p>Coffee shop site with live opening hours, weekly specials and order-ahead on WhatsApp that builds the message for you.</p>
+          <div class="tags"><span class="tag concept">Concept</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <a class="view" href="corner-cafe/">View live site <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+      <article class="project">
+        <div class="mock barber" aria-hidden="true">
+          <div class="browser"><i></i><i></i><i></i><span></span></div>
+          <img class="shot" src="images/obsidian-desktop.jpg" alt="">
+        </div>
+        <div class="project-body">
+          <h3>OBSIDIAN Auto Detailing</h3>
+          <p>Premium car detailing site with service packages, a photo gallery with a lightbox, and quote requests sent straight to WhatsApp.</p>
+          <div class="tags"><span class="tag concept">Concept</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <a class="view" href="obsidian/">View live site <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+      <article class="project">
+        <div class="mock self" aria-hidden="true">
+          <div class="browser"><i></i><i></i><i></i><span></span></div>
+          <img class="shot" src="images/portfolio-desktop.jpg" alt="">
+        </div>
+        <div class="project-body">
+          <h3>This portfolio</h3>
+          <p>Hand-coded with no builders or templates. A 3D before-and-after phone you can flip, mouse-tilt effects and a dark mode.</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-head">
+      <div>
+        <p class="label">How it works</p>
+        <h2>From first chat to live site in about a week</h2>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Quick chat</h3>
+        <p>Ten minutes on what you need and what your customers usually ask about. No charge.</p>
+      </div>
+      <div class="step">
+        <h3>I build it</h3>
+        <p>You get a preview link within a few days and can ask for changes.</p>
+      </div>
+      <div class="step">
+        <h3>It goes live</h3>
+        <p>I put it on your domain and show you how it works. You only pay once you're happy.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <h2>Let's get you more customers.</h2>
+      <p>Send me your business name and what you'd like. I'll reply within a day with a free quote and an idea of what your new site could look like.</p>
+      <div class="email-row">
+        <span class="email" id="email">nikitaj.business@gmail.com</span>
+        <button class="btn" type="button" id="copy-btn">Copy email</button>
+        <span id="copied" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; <span id="year">2026</span> Nikita</span>
+    <span>Hand-coded in Northampton</span>
+  </footer>
+</main>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  document.getElementById("copy-btn").addEventListener("click", async function () {
+    const email = document.getElementById("email").textContent.trim();
+    const msg = document.getElementById("copied");
+    try {
+      await navigator.clipboard.writeText(email);
+      msg.textContent = "Copied!";
+    } catch (e) {
+      msg.textContent = "Couldn't copy. Select the address and copy it yourself.";
+    }
+    setTimeout(function () { msg.textContent = ""; }, 2500);
+  });
+
+  // Before / after flip
+  const phone = document.getElementById("phone");
+  const btnBefore = document.getElementById("btn-before");
+  const btnAfter = document.getElementById("btn-after");
+  function show(before) {
+    phone.classList.toggle("flipped", before);
+    btnBefore.setAttribute("aria-pressed", String(before));
+    btnAfter.setAttribute("aria-pressed", String(!before));
+  }
+  btnBefore.addEventListener("click", function () { show(true); });
+  btnAfter.addEventListener("click", function () { show(false); });
+  phone.addEventListener("click", function () { show(!phone.classList.contains("flipped")); });
+
+  // Mouse tilt, only on devices with a real mouse and when motion is allowed
+  const canTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+                  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function addTilt(area, target, maxX, maxY, restX, restY) {
+    area.addEventListener("pointermove", function (e) {
+      const r = area.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      target.style.setProperty("--ry", (px * maxY * 2) + "deg");
+      target.style.setProperty("--rx", (-py * maxX * 2) + "deg");
+      target.style.setProperty("--gx", (100 - (px + 0.5) * 100) + "%");
+    });
+    area.addEventListener("pointerleave", function () {
+      target.style.setProperty("--rx", restX);
+      target.style.setProperty("--ry", restY);
+      target.style.removeProperty("--gx");
+    });
+  }
+
+  if (canTilt) {
+    const tilt = document.getElementById("tilt");
+    addTilt(document.querySelector(".demo"), tilt, 12, 20, "6deg", "-12deg");
+    document.querySelectorAll(".project").forEach(function (card) {
+      addTilt(card, card, 4, 6, "0deg", "0deg");
+    });
+  }
+</script>
+</body>
+</html>

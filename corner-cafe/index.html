@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corner Café</title>
+<meta name="description" content="Specialty coffee and croissants baked fresh every morning on the high street. Sit in, or order ahead on WhatsApp and skip the queue.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/*
+  CORNER CAFÉ (concept site)
+  Idea: a calm, modern coffee shop. Big photos, an elegant serif,
+  lots of space, small spaced-out capitals for labels. The photos
+  do the selling, so the design stays quiet.
+
+  PHOTOS: put them in an "images" folder next to this file:
+    images/hero.jpg        (coffee and croissant, the big one)
+    images/latte.jpg
+    images/croissant.jpg
+    images/pastries.jpg
+    images/interior.jpg
+    images/barista.jpg
+  Until a photo exists, a placeholder box shows in its place.
+*/
+:root {
+  --oat: #efe9df;       /* page background */
+  --paper: #f7f3ec;     /* cards */
+  --ink: #2a2622;       /* text, dark buttons */
+  --muted: #6a6158;     /* secondary text */
+  --line: #d9cfc1;      /* hairlines */
+  --roast: #8a6a4c;     /* accent */
+  --green: #3f7a52;     /* open now */
+  --shut: #a8503a;      /* closed */
+  --whatsapp: #1f9e55;
+
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+
+/* ---------- Basics ---------- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--oat);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: clamp(16px, 5vw, 56px); padding-right: clamp(16px, 5vw, 56px); }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.02; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+h1 em, h2 em { font-style: italic; color: var(--roast); }
+h2 { font-size: clamp(2.4rem, 5.5vw, 4rem); }
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+/* Underlined text links in small capitals */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1.5px solid currentColor;
+  padding-bottom: 4px;
+  background: none;
+  border-top: 0; border-left: 0; border-right: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.link:hover { color: var(--roast); }
+.link .arr { transition: transform .2s ease; }
+.link:hover .arr { transform: translateX(4px); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--oat);
+  font: 600 0.82rem var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.btn:hover { background: #000; }
+@media (prefers-reduced-motion: reduce) { .link .arr, .btn { transition: none; } .link:hover .arr { transform: none; } }
+
+/* ---------- Photo slots ----------
+   If the image file is missing, the <img> removes itself (onerror)
+   and the box shows its label instead. */
+.ph {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: linear-gradient(150deg, #b9977a, #7a5c45);
+}
+.ph::before {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  text-align: center;
+  color: rgba(255,255,255,.8);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.ph img { position: relative; width: 100%; height: 100%; object-fit: cover; }
+.ph figcaption {
+  position: absolute;
+  left: 14px; bottom: 12px;
+  color: #fff;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 10px rgba(0,0,0,.35);
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--oat) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 22px; padding-bottom: 22px; }
+.logo { text-decoration: none; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; }
+.nav { display: flex; align-items: center; gap: 34px; }
+.nav a { text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+.nav a:hover { color: var(--roast); }
+.nav .order-link { border-bottom: 1.5px solid currentColor; padding-bottom: 3px; }
+.menu-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; }
+.menu-toggle span { display: block; width: 24px; height: 1.5px; background: var(--ink); margin: 6px 0; transition: transform .2s ease, opacity .2s ease; }
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+@media (max-width: 780px) {
+  .menu-toggle { display: block; }
+  .nav {
+    display: none;
+    position: absolute; left: 0; right: 0; top: 100%;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--oat);
+    border-bottom: 1px solid var(--line);
+    padding: 0 clamp(16px, 5vw, 56px) 18px;
+  }
+  .nav.open { display: flex; }
+  .nav a { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .nav .order-link { border-bottom: 1px solid var(--line); padding-bottom: 16px; color: var(--roast); }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding-bottom: clamp(56px, 8vw, 96px); }
+.hero .ph { aspect-ratio: 16 / 7.2; }
+.hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: end;
+  margin-top: clamp(28px, 4vw, 44px);
+}
+.hero h1 { font-size: clamp(3.2rem, 8vw, 6.4rem); }
+.hero-side { display: grid; gap: 18px; padding-bottom: 8px; }
+.hero-side p { margin: 0; color: var(--muted); max-width: 40ch; }
+.hero-links { display: flex; flex-wrap: wrap; gap: 14px 30px; }
+.status { display: inline-flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; }
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 20%, transparent); }
+.status.closed .dot { background: var(--shut); box-shadow: 0 0 0 4px color-mix(in srgb, var(--shut) 20%, transparent); }
+
+/* ---------- Three promises ---------- */
+.promises {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.promise { padding: 28px 28px 28px 0; display: grid; gap: 6px; }
+.promise + .promise { padding-left: 28px; border-left: 1px solid var(--line); }
+.promise b { font-family: var(--serif); font-weight: 400; font-size: 1.6rem; line-height: 1.1; }
+.promise span { color: var(--muted); font-size: 0.95rem; }
+
+/* ---------- Sections ---------- */
+section { padding-top: clamp(72px, 10vw, 128px); padding-bottom: clamp(72px, 10vw, 128px); }
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 32px; align-items: end; margin-bottom: 48px; }
+.head p { margin: 0; color: var(--muted); max-width: 42ch; }
+
+/* ---------- This week's bakes + gallery ---------- */
+.bakes-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.bakes { display: grid; }
+.bake { padding: 22px 0; border-top: 1px solid var(--line); display: grid; gap: 4px; }
+.bake:last-of-type { border-bottom: 1px solid var(--line); }
+.bake .when { font-size: 0.72rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--roast); }
+.bake .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.bake h3 { font-size: 1.75rem; }
+.bake .price { font-weight: 600; font-variant-numeric: tabular-nums; }
+.bake p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.bakes .link { margin-top: 26px; justify-self: start; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.gallery .ph { aspect-ratio: 4 / 5; }
+.gallery .ph:nth-child(2) { margin-top: 48px; }
+.gallery .ph:nth-child(3) { margin-top: -48px; }
+
+/* ---------- Menu ---------- */
+.menu-sec { background: var(--paper); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px 30px; margin-bottom: 30px; border-bottom: 1px solid var(--line); }
+.tab {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 0 0 12px;
+  font: 600 0.8rem var(--sans);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+}
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 0 72px; }
+.panel[hidden] { display: none; }
+.dish { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.dish-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.dish h4 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.45rem; line-height: 1.15; }
+.dish .price { font-weight: 600; font-variant-numeric: tabular-nums; }
+.dish p { margin: 2px 0 0; color: var(--muted); font-size: 0.95rem; }
+.tag { font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: .08em; color: var(--green); margin-left: 8px; vertical-align: 4px; }
+.menu-note { margin: 26px 0 0; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Order ahead ---------- */
+.order { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+.order-list { display: grid; gap: 34px; }
+.order-group h3 { font-size: 1.9rem; margin-bottom: 6px; }
+.line { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.line .name { font-weight: 500; }
+.line .name small { display: block; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stepper { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.stepper button {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: 500 1.15rem/1 var(--sans);
+  cursor: pointer;
+}
+.stepper button:hover { background: var(--ink); color: var(--oat); }
+.stepper button:disabled { opacity: .25; cursor: default; background: transparent; color: var(--ink); }
+.stepper output { min-width: 26px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.basket {
+  position: sticky;
+  top: 100px;
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 30px;
+  display: grid;
+  gap: 16px;
+}
+.basket h3 { font-size: 2.1rem; }
+.basket-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-variant-numeric: tabular-nums; }
+.basket-items li { display: flex; justify-content: space-between; gap: 12px; }
+.basket-items .empty { color: var(--muted); }
+.total { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; font-weight: 700; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 0.72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.field input, .field select, .field textarea {
+  font: 500 1rem var(--sans);
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+.field textarea { resize: vertical; min-height: 60px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.wa-btn { background: var(--whatsapp); width: 100%; }
+.wa-btn:hover { background: #17834a; }
+.wa-btn[aria-disabled="true"] { opacity: .4; cursor: not-allowed; }
+.wa-btn svg { width: 18px; height: 18px; }
+.hint { margin: -4px 0 0; font-size: 0.85rem; color: var(--muted); min-height: 1.3em; }
+.hint.warn { color: var(--shut); font-weight: 600; }
+
+/* ---------- Visit ---------- */
+.visit-sec { background: var(--ink); color: var(--oat); }
+.visit-sec .label, .visit-sec .head p { color: #b3a898; }
+.visit-sec h2 em { color: #c9a985; }
+.visit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(24px, 4vw, 48px); align-items: start; }
+.visit h3 { font-size: 1.8rem; margin-bottom: 14px; }
+.hours { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.97rem; }
+.hours td { padding: 9px 0; border-bottom: 1px solid rgba(239,233,223,.14); }
+.hours td:last-child { text-align: right; }
+.hours tr.today td { color: #e6c9a6; font-weight: 600; }
+.address { font-style: normal; display: grid; gap: 2px; color: #d6ccbd; margin-bottom: 22px; }
+.visit .ph { aspect-ratio: 4 / 5; }
+.visit-links { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+
+footer { background: var(--ink); color: #9d9284; padding-top: 28px; padding-bottom: 40px; font-size: 0.85rem; }
+.foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid rgba(239,233,223,.14); padding-top: 24px; }
+footer p { margin: 0; }
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 960px) {
+  .visit { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .visit .ph { grid-column: span 2; aspect-ratio: 16 / 9; }
+}
+@media (max-width: 860px) {
+  .hero-row, .head, .bakes-grid, .order { grid-template-columns: minmax(0, 1fr); }
+  .head { gap: 14px; }
+  .hero .ph { aspect-ratio: 4 / 3.4; }
+  .basket { position: static; }
+  .promises { grid-template-columns: minmax(0, 1fr); }
+  .promise, .promise + .promise { padding: 18px 0; border-left: 0; }
+  .promise + .promise { border-top: 1px solid var(--line); }
+}
+@media (max-width: 600px) {
+  .visit { grid-template-columns: minmax(0, 1fr); }
+  .visit .ph { grid-column: auto; }
+  .gallery .ph:nth-child(2), .gallery .ph:nth-child(3) { margin-top: 0; }
+  .two { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="logo" href="#top">Corner Café</a>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#bakes">This week</a>
+      <a href="#menu">Menu</a>
+      <a href="#visit">Visit</a>
+      <a class="order-link" href="#order">Order ahead</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <figure class="ph" data-label="Coffee &amp; croissant photo"><img src="images/hero.jpg" alt="A flat white and a fresh croissant on a café table" onerror="this.remove()"></figure>
+    <div class="hero-row">
+      <h1>Good coffee.<br><em>Honest bakes.</em></h1>
+      <div class="hero-side">
+        <span class="status" id="status" role="status"><span class="dot" aria-hidden="true"></span><span id="status-text">Checking opening hours…</span></span>
+        <p>Specialty coffee and croissants baked fresh every morning, on the corner of the high street. Sit in, or order ahead and skip the queue.</p>
+        <div class="hero-links">
+          <a class="link" href="#order">Order ahead <span class="arr" aria-hidden="true">&rarr;</span></a>
+          <a class="link" href="#menu">View menu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="promises">
+      <div class="promise"><b>Roasted locally</b><span>Our beans come from a small roastery twenty minutes up the road.</span></div>
+      <div class="promise"><b>Baked at 6am</b><span>Croissants and buns come out of our oven every single morning.</span></div>
+      <div class="promise"><b>Any milk, no charge</b><span>Oat, soy and almond cost the same as dairy. As it should be.</span></div>
+    </div>
+  </div>
+
+  <!-- THIS WEEK'S BAKES + GALLERY -->
+  <section id="bakes">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label">This week</p>
+          <h2>Fresh out of <em>the oven</em></h2>
+        </div>
+        <p>Our bakers try something new every week. When it's gone, it's gone, so come early.</p>
+      </div>
+      <div class="bakes-grid">
+        <div class="bakes">
+          <div class="bake">
+            <span class="when">Monday to Wednesday</span>
+            <div class="row"><h3>Pistachio croissant</h3><span class="price">£3.80</span></div>
+            <p>Twice-baked, filled with pistachio cream and topped with crushed nuts.</p>
+          </div>
+          <div class="bake">
+            <span class="when">Thursday deal</span>
+            <div class="row"><h3>Cinnamon bun &amp; flat white</h3><span class="price">£6.00</span></div>
+            <p>Our best seller and your morning coffee, together for less.</p>
+          </div>
+          <div class="bake">
+            <span class="when">Friday to Sunday</span>
+            <div class="row"><h3>Raspberry danish</h3><span class="price">£3.60</span></div>
+            <p>Flaky pastry, vanilla custard and fresh raspberries.</p>
+          </div>
+          <div class="bake">
+            <span class="when">All November</span>
+            <div class="row"><h3>Maple pecan latte</h3><span class="price">£3.90</span></div>
+            <p>Our seasonal special. Tastes like a proper autumn morning.</p>
+          </div>
+          <a class="link" href="#order">Order this week's bakes <span class="arr" aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="gallery">
+          <figure class="ph" data-label="Latte photo"><img src="images/latte.jpg" alt="A latte with latte art" onerror="this.remove()"><figcaption>Flat whites</figcaption></figure>
+          <figure class="ph" data-label="Croissant photo"><img src="images/croissant.jpg" alt="Fresh butter croissants" onerror="this.remove()"><figcaption>Butter croissants</figcaption></figure>
+          <figure class="ph" data-label="Pastries photo"><img src="images/pastries.jpg" alt="A counter of fresh pastries" onerror="this.remove()"><figcaption>The morning counter</figcaption></figure>
+          <figure class="ph" data-label="Café interior photo"><img src="images/interior.jpg" alt="Inside the café" onerror="this.remove()"><figcaption>Stay a while</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu" class="menu-sec">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label">The menu</p>
+          <h2>Coffee, bakes &amp; <em>brunch</em></h2>
+        </div>
+        <p>Extra shot for 50p. Any milk at no extra cost. Decaf on request.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Menu sections">
+        <button class="tab" role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true">Coffee</button>
+        <button class="tab" role="tab" id="tab-tea" aria-controls="panel-tea" aria-selected="false" tabindex="-1">Tea &amp; more</button>
+        <button class="tab" role="tab" id="tab-bakes" aria-controls="panel-bakes" aria-selected="false" tabindex="-1">Bakes</button>
+        <button class="tab" role="tab" id="tab-brunch" aria-controls="panel-brunch" aria-selected="false" tabindex="-1">Brunch</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-coffee" aria-labelledby="tab-coffee">
+        <div class="dish"><div class="dish-top"><h4>Espresso</h4><span class="price">£2.40</span></div><p>Our house blend: chocolate, hazelnut, a little cherry.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Flat White</h4><span class="price">£3.30</span></div><p>Double shot, silky milk. The one everyone orders.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Latte</h4><span class="price">£3.50</span></div><p>Add vanilla, caramel or hazelnut for 50p.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Cappuccino</h4><span class="price">£3.40</span></div><p>Proper foam, a dusting of cocoa.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Cortado</h4><span class="price">£3.10</span></div><p>Equal parts espresso and warm milk.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Iced Latte</h4><span class="price">£3.80</span></div><p>Yes, even in November.</p></div>
+      </div>
+      <div class="panel" role="tabpanel" id="panel-tea" aria-labelledby="tab-tea" hidden>
+        <div class="dish"><div class="dish-top"><h4>Breakfast Tea</h4><span class="price">£2.40</span></div><p>Loose leaf, served in a pot.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Earl Grey</h4><span class="price">£2.40</span></div><p>With a slice of lemon if you like.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Matcha Latte</h4><span class="price">£3.80</span></div><p>Ceremonial grade, lightly sweetened.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Chai Latte</h4><span class="price">£3.60</span></div><p>Spiced, warming, made with real chai syrup.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Hot Chocolate</h4><span class="price">£3.60</span></div><p>Belgian chocolate, steamed milk.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Fresh Orange Juice</h4><span class="price">£3.20</span></div><p>Squeezed to order.</p></div>
+      </div>
+      <div class="panel" role="tabpanel" id="panel-bakes" aria-labelledby="tab-bakes" hidden>
+        <div class="dish"><div class="dish-top"><h4>Butter Croissant<span class="tag">V</span></h4><span class="price">£2.80</span></div><p>Laminated by hand, baked every morning.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Almond Croissant<span class="tag">V</span></h4><span class="price">£3.50</span></div><p>Frangipane filling, toasted almonds.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Pain au Chocolat<span class="tag">V</span></h4><span class="price">£3.00</span></div><p>Two bars of dark chocolate inside. Not one.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Cinnamon Bun<span class="tag">V</span></h4><span class="price">£3.40</span></div><p>Soft, sticky, cardamom sugar on top.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Banana Bread<span class="tag">VG</span></h4><span class="price">£3.20</span></div><p>Vegan, toasted, with a little salted butter alternative.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Sourdough Loaf<span class="tag">VG</span></h4><span class="price">£4.50</span></div><p>Take one home. Baked daily, sells out by noon.</p></div>
+      </div>
+      <div class="panel" role="tabpanel" id="panel-brunch" aria-labelledby="tab-brunch" hidden>
+        <div class="dish"><div class="dish-top"><h4>Ham &amp; Cheese Croissant</h4><span class="price">£6.50</span></div><p>Toasted with Gruyère and Dijon mustard.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Avocado on Sourdough<span class="tag">VG</span></h4><span class="price">£8.50</span></div><p>Chilli, lime and seeds. Add a poached egg for £1.50.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Eggs Royale</h4><span class="price">£9.50</span></div><p>Poached eggs, smoked salmon and hollandaise on a muffin.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Mushrooms on Toast<span class="tag">V</span></h4><span class="price">£7.50</span></div><p>Garlic mushrooms, thyme and crème fraîche.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Granola Bowl<span class="tag">VG</span></h4><span class="price">£6.00</span></div><p>House granola, coconut yoghurt, berries.</p></div>
+        <div class="dish"><div class="dish-top"><h4>Sourdough Toast &amp; Jam<span class="tag">V</span></h4><span class="price">£3.80</span></div><p>Thick slices, salted butter, homemade jam.</p></div>
+      </div>
+      <p class="menu-note">V = vegetarian, VG = vegan. Please tell us about any allergies when you order.</p>
+    </div>
+  </section>
+
+  <!-- ORDER AHEAD ON WHATSAPP -->
+  <section id="order">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label">Order ahead</p>
+          <h2>Skip the queue. <em>Order on WhatsApp.</em></h2>
+        </div>
+        <p>Pick what you want and a collection time. We'll get a message with your order, and it'll be waiting on the counter. Pay when you collect.</p>
+      </div>
+
+      <div class="order">
+        <!-- Built by JavaScript from the ORDER_MENU list at the bottom of the page -->
+        <div class="order-list" id="order-list"></div>
+
+        <aside class="basket" aria-labelledby="basket-title">
+          <h3 id="basket-title">Your order</h3>
+          <ul class="basket-items" id="basket-items" aria-live="polite"></ul>
+          <div class="total"><span>Total</span><span id="basket-total">£0.00</span></div>
+          <div class="two">
+            <div class="field">
+              <label for="cust-name">Name</label>
+              <input id="cust-name" type="text" autocomplete="given-name" placeholder="For the cup">
+            </div>
+            <div class="field">
+              <label for="milk">Milk</label>
+              <select id="milk">
+                <option>Whole</option>
+                <option>Semi-skimmed</option>
+                <option selected>Oat</option>
+                <option>Soy</option>
+                <option>Almond</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="pickup">Collection time</label>
+            <select id="pickup"></select>
+          </div>
+          <div class="field">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" placeholder="e.g. extra hot, decaf, warm the croissant"></textarea>
+          </div>
+          <a class="btn wa-btn" id="wa-btn" href="#order" aria-disabled="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3Z"/></svg>
+            Send on WhatsApp
+          </a>
+          <p class="hint" id="wa-hint">Add something and your name to send.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section id="visit" class="visit-sec">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label">Visit</p>
+          <h2>On the corner of <em>the high street</em></h2>
+        </div>
+        <p>Two minutes from the station. Laptops welcome on weekdays, dogs welcome always.</p>
+      </div>
+      <div class="visit">
+        <div>
+          <h3>Opening hours</h3>
+          <!-- data-day: 0 = Sunday ... 6 = Saturday, to match JavaScript's getDay() -->
+          <table class="hours" id="hours">
+            <tbody>
+              <tr data-day="1"><td>Monday</td><td>7am to 5pm</td></tr>
+              <tr data-day="2"><td>Tuesday</td><td>7am to 5pm</td></tr>
+              <tr data-day="3"><td>Wednesday</td><td>7am to 5pm</td></tr>
+              <tr data-day="4"><td>Thursday</td><td>7am to 5pm</td></tr>
+              <tr data-day="5"><td>Friday</td><td>7am to 5pm</td></tr>
+              <tr data-day="6"><td>Saturday</td><td>8am to 5pm</td></tr>
+              <tr data-day="0"><td>Sunday</td><td>9am to 3pm</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Find us</h3>
+          <address class="address">
+            <span>12 High Street</span>
+            <span>Northampton</span>
+            <span style="margin-top:12px;">01632 960000</span>
+          </address>
+          <div class="visit-links">
+            <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=High+Street">Get directions <span class="arr" aria-hidden="true">&rarr;</span></a>
+            <a class="link" href="tel:+441632960000">Call us</a>
+            <a class="link" href="#order">Order ahead</a>
+          </div>
+        </div>
+        <figure class="ph" data-label="Barista photo"><img src="images/barista.jpg" alt="A barista pouring latte art" onerror="this.remove()"></figure>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <p>&copy; <span id="year">2026</span> Corner Café</p>
+    <p>Corner Café is a fictional café. Concept site designed and built by <a href="../">Nikita</a>.</p>
+  </div>
+</footer>
+
+<script>
+  /* ============ SETTINGS ============
+     The café's WhatsApp number in international format, no + or spaces.
+     07700 900000 is a fake number reserved for TV and films. */
+  const WHATSAPP_NUMBER = "447700900000";
+  const SLOT_MINUTES = 10; // collection slots every 10 minutes
+
+  // Opening hours in minutes after midnight. Index = getDay(): 0 = Sunday.
+  const HOURS = [
+    { open: 9 * 60, close: 15 * 60 }, // Sunday
+    { open: 7 * 60, close: 17 * 60 }, // Monday
+    { open: 7 * 60, close: 17 * 60 }, // Tuesday
+    { open: 7 * 60, close: 17 * 60 }, // Wednesday
+    { open: 7 * 60, close: 17 * 60 }, // Thursday
+    { open: 7 * 60, close: 17 * 60 }, // Friday
+    { open: 8 * 60, close: 17 * 60 }  // Saturday
+  ];
+
+  // What can be ordered ahead. Prices in pence so the maths has no rounding errors.
+  // "coffee: true" means the milk choice gets added to the message.
+  const ORDER_MENU = [
+    { group: "Coffee", items: [
+      { id: "flat",   name: "Flat White",               price: 330, coffee: true },
+      { id: "latte",  name: "Latte",                    price: 350, coffee: true },
+      { id: "capp",   name: "Cappuccino",               price: 340, coffee: true },
+      { id: "maple",  name: "Maple Pecan Latte",        price: 390, coffee: true },
+      { id: "iced",   name: "Iced Latte",               price: 380, coffee: true }
+    ]},
+    { group: "Bakes", items: [
+      { id: "crois",  name: "Butter Croissant",         price: 280 },
+      { id: "almond", name: "Almond Croissant",         price: 350 },
+      { id: "pain",   name: "Pain au Chocolat",         price: 300 },
+      { id: "bun",    name: "Cinnamon Bun",             price: 340 },
+      { id: "pist",   name: "Pistachio Croissant",      price: 380 }
+    ]},
+    { group: "Brunch", items: [
+      { id: "ham",    name: "Ham & Cheese Croissant",   price: 650 },
+      { id: "avo",    name: "Avocado on Sourdough",     price: 850 }
+    ]}
+  ];
+
+  /* ============ HELPERS ============ */
+  function pounds(pence) { return "£" + (pence / 100).toFixed(2); }
+
+  // 450 -> "7:30am", 960 -> "4pm"
+  function formatTime(mins) {
+    const h24 = Math.floor(mins / 60);
+    const m = mins % 60;
+    const suffix = h24 >= 12 ? "pm" : "am";
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+    return m === 0 ? h12 + suffix : h12 + ":" + String(m).padStart(2, "0") + suffix;
+  }
+
+  /* ============ 1. MOBILE MENU ============ */
+  const toggle = document.getElementById("menu-toggle");
+  const nav = document.getElementById("nav");
+  toggle.addEventListener("click", function () {
+    const isOpen = nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  });
+  nav.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
+      nav.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  /* ============ 2. LIVE OPEN / CLOSED STATUS ============ */
+  function updateStatus() {
+    const now = new Date();
+    const day = now.getDay();
+    const minsNow = now.getHours() * 60 + now.getMinutes();
+    const today = HOURS[day];
+    const pill = document.getElementById("status");
+    const text = document.getElementById("status-text");
+
+    if (minsNow >= today.open && minsNow < today.close) {
+      pill.classList.remove("closed");
+      text.textContent = "Open now, until " + formatTime(today.close);
+    } else if (minsNow < today.open) {
+      pill.classList.add("closed");
+      text.textContent = "Closed, opens today at " + formatTime(today.open);
+    } else {
+      pill.classList.add("closed");
+      text.textContent = "Closed, opens tomorrow at " + formatTime(HOURS[(day + 1) % 7].open);
+    }
+    document.querySelectorAll("#hours tr").forEach(function (row) {
+      row.classList.toggle("today", Number(row.dataset.day) === day);
+    });
+  }
+  updateStatus();
+  setInterval(updateStatus, 60 * 1000);
+
+  /* ============ 3. MENU TABS ============ */
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      const selected = t === tab;
+      t.setAttribute("aria-selected", String(selected));
+      t.tabIndex = selected ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !selected;
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { selectTab(tab); });
+    tab.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+        selectTab(next);
+        next.focus();
+      }
+    });
+  });
+
+  /* ============ 4. ORDER AHEAD ON WHATSAPP ============
+     - "basket" remembers how many of each item you've picked, e.g. { flat: 2, crois: 1 }
+     - every change calls render(), which redraws the counts, the basket and the total
+     - the WhatsApp button links to wa.me with the order typed out as the message */
+  const basket = {};
+  const allItems = {};
+  const list = document.getElementById("order-list");
+
+  ORDER_MENU.forEach(function (group) {
+    const wrap = document.createElement("div");
+    wrap.className = "order-group";
+    const h = document.createElement("h3");
+    h.textContent = group.group;
+    wrap.appendChild(h);
+
+    group.items.forEach(function (item) {
+      allItems[item.id] = item;
+      basket[item.id] = 0;
+
+      const row = document.createElement("div");
+      row.className = "line";
+      row.dataset.id = item.id;
+
+      const name = document.createElement("span");
+      name.className = "name";
+      name.textContent = item.name;
+      const price = document.createElement("small");
+      price.textContent = pounds(item.price);
+      name.appendChild(price);
+
+      const stepper = document.createElement("span");
+      stepper.className = "stepper";
+      stepper.innerHTML =
+        '<button type="button" class="remove">&minus;</button>' +
+        '<output>0</output>' +
+        '<button type="button" class="add">+</button>';
+      stepper.querySelector(".remove").setAttribute("aria-label", "Remove one " + item.name);
+      stepper.querySelector(".add").setAttribute("aria-label", "Add one " + item.name);
+      stepper.querySelector(".add").addEventListener("click", function () { basket[item.id]++; render(); });
+      stepper.querySelector(".remove").addEventListener("click", function () {
+        if (basket[item.id] > 0) { basket[item.id]--; render(); }
+      });
+
+      row.append(name, stepper);
+      wrap.appendChild(row);
+    });
+    list.appendChild(wrap);
+  });
+
+  // Collection times from now until 10 minutes before closing.
+  // If it's too late today, offer tomorrow's times instead.
+  function fillPickupTimes() {
+    const select = document.getElementById("pickup");
+    select.innerHTML = "";
+    const now = new Date();
+    let day = now.getDay();
+    let minsNow = now.getHours() * 60 + now.getMinutes();
+    let label = "Today";
+
+    if (minsNow > HOURS[day].close - 20) {
+      day = (day + 1) % 7;
+      minsNow = 0;
+      label = "Tomorrow";
+    }
+    const earliest = Math.ceil((minsNow + SLOT_MINUTES) / SLOT_MINUTES) * SLOT_MINUTES;
+    const first = Math.max(HOURS[day].open, earliest);
+    for (let t = first; t <= HOURS[day].close - SLOT_MINUTES; t += SLOT_MINUTES) {
+      const opt = document.createElement("option");
+      opt.value = label + " at " + formatTime(t);
+      opt.textContent = opt.value;
+      select.appendChild(opt);
+    }
+  }
+  fillPickupTimes();
+
+  const nameInput = document.getElementById("cust-name");
+  const milkSelect = document.getElementById("milk");
+  const notesInput = document.getElementById("notes");
+  const pickupSelect = document.getElementById("pickup");
+  const waBtn = document.getElementById("wa-btn");
+  const hint = document.getElementById("wa-hint");
+
+  function render() {
+    const itemsEl = document.getElementById("basket-items");
+    itemsEl.innerHTML = "";
+    let total = 0;
+    let hasCoffee = false;
+    const lines = [];
+
+    Object.keys(basket).forEach(function (id) {
+      const qty = basket[id];
+      const row = list.querySelector('[data-id="' + id + '"]');
+      row.querySelector("output").textContent = qty;
+      row.querySelector(".remove").disabled = qty === 0;
+      if (qty > 0) {
+        const item = allItems[id];
+        total += qty * item.price;
+        if (item.coffee) hasCoffee = true;
+        lines.push(qty + "x " + item.name);
+        const li = document.createElement("li");
+        const left = document.createElement("span");
+        const right = document.createElement("span");
+        left.textContent = qty + " × " + item.name;
+        right.textContent = pounds(qty * item.price);
+        li.append(left, right);
+        itemsEl.appendChild(li);
+      }
+    });
+
+    if (lines.length === 0) {
+      const li = document.createElement("li");
+      li.className = "empty";
+      li.textContent = "Nothing yet. Tap + to add something.";
+      itemsEl.appendChild(li);
+    }
+    document.getElementById("basket-total").textContent = pounds(total);
+
+    // Build the WhatsApp message
+    const name = nameInput.value.trim();
+    const ready = lines.length > 0 && name.length > 0;
+    let message = "Hi! I'd like to order for collection:\n\n" + lines.join("\n");
+    if (hasCoffee) message += "\n(" + milkSelect.value + " milk)";
+    message += "\n\nTotal: " + pounds(total) +
+      "\nName: " + name +
+      "\nCollection: " + pickupSelect.value;
+    if (notesInput.value.trim()) message += "\nNotes: " + notesInput.value.trim();
+
+    waBtn.href = ready ? "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message) : "#order";
+    waBtn.setAttribute("aria-disabled", String(!ready));
+    hint.classList.remove("warn");
+    hint.textContent = ready
+      ? "Opens WhatsApp with your order typed out. Just hit send."
+      : (lines.length === 0 ? "Add something to your order to send it." : "Add your name so we know whose cup it is.");
+  }
+
+  waBtn.addEventListener("click", function (e) {
+    if (waBtn.getAttribute("aria-disabled") === "true") {
+      e.preventDefault();
+      hint.classList.add("warn");
+    }
+  });
+  [nameInput, milkSelect, notesInput, pickupSelect].forEach(function (el) { el.addEventListener("input", render); });
+  render();
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
